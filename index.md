@@ -435,18 +435,21 @@ nq.Post('http://testphp.vulnweb.com/search.php',post_data('test=query'))
 nq.Put('http://testphp.vulnweb.com/search.php',post_data('test=query'))
 ```
 * extractHeaders
+
 ```python
 >> from libs import extractHeaders
 >> extractHeaders('Auth: c2NhbnQzcgo=')
 {'Auth': 'c2NhbnQzcgo='}
 ```
 * urlencoder
+
 ```python
 >> from libs import urlencoder
 >> urlencoder('<img src=x onerror=alert(1)>')
 %3c%69%6d%67%20%73%72%63%3d%78%20%6f%6e%65%72%72%6f%72%3d%61%6c%65%72%74%28%31%29%3e
 ```
 * insertAfter
+
 ```python
 >> from libs import insertAfter
 insertAfter('TEXT','INSERT_AFTER','NewText')
@@ -455,6 +458,7 @@ insertAfter('TEXT','INSERT_AFTER','NewText')
 http://site.com/?msg=" OR 1=1 --hi
 ```
 * ShowMessage
+
 ```python
 >> from core import ShowMessage as show
 >> show.bug(bug='Cross-site scripting',payload='<img src=x onerror=alert(1)>',method='GET',parameter='q',target='http://mysite.com',link='q=<img src=x onerror=alert(1)>')
