@@ -378,18 +378,6 @@ us.en.kb.sony.com 160.33.196.15
 
 ```
 
-### Demo 
-
-![Example](images/all.gif)
-
-**Nokia** https://www.nokia.com/responsible-disclosure/
-![Nokia](images/nokia.gif)
-
-**IBM** https://hackerone.com/ibm
-
-![IBM](images/ibm.png)
-
-
 
 ### writing your scant3r module
 
@@ -421,7 +409,7 @@ def run(opts):
 >> post_data('id=1&user=admin')
 
 {
-   'id':'1',
+  'id':'1',
   'user':'admin'
 }
 ```
