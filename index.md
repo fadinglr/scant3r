@@ -34,23 +34,30 @@ $ pip3 install -r requirements.txt
 ```
 
 ### Update to latest version:
+
 ```bash
 $ cd scant3r
 $ git pull
 ```
 **Usage**
+
 * normal scan
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py 
 ```
+
 * ScanT3r API
+
 ```bash
 $ python3 scant3r.py --api
 ```
 
 ### API Endpoints
+
 * /scan/{scanid}
 * parameter: `url`
+
 
 | ID              | Scanner                   |
 | :-------------    | :-------------                |
@@ -61,7 +68,9 @@ $ python3 scant3r.py --api
 | **5** | CRLF|
 
 #### Example:
+
 * SSTI
+
 ```bash
 [knassar702@PC]:~/tools/scant3r - curl http://127.0.0.1:6040/scan/4?url=http://localhost/search?u= -sk | jq
 {
@@ -85,7 +94,9 @@ $ python3 scant3r.py --api
   ]
 }
 ```
+
 * XSS
+
 ```bash
 knassar702@PC]:~/tools/scant3r - curl "http://localhost:6040/scan/1?url=http://testphp.vulnweb.com/search.php?test=query%26searchFor=1%26goButton=go" -sk | jq
 {
@@ -101,53 +112,75 @@ knassar702@PC]:~/tools/scant3r - curl "http://localhost:6040/scan/1?url=http://t
   ]
 }
 ```
+
 ### Docker ![DOCKER](https://img.icons8.com/color/48/000000/docker.png)
+
 ```bash
 $ docker build -t scant3r https://github.com/knassar702/scant3r.git
 $ docker run --rm -d -p 6040:6040 --name scant3r -it scant3r
 ```
+
 ***
 
 * add module
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -m headers
 # note : use -S if you need to use scanner after use modules
 ```
+
 * random User-agents
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -R
 ```
+
 * add custom headers
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -H "Auth: U2NhblQzcgo=\nNew: True"
 ```
+
 * add timeout
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -t 1000
 ```
+
 * add threads
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -w 50
 ```
+
 * add http/https proxy
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -p http://localhost:8080
 ```
+
 * add cookies
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -c 'login=test%2Ftest'
 ```
+
 * follow redirects
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -r
 ```
+
 * dump http requests/responses
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py -H "Auth: U2NhblQzcgo=" -d
 ```
+
 ![DUMP](images/req.png)
 
 * remove logo
+
 ```bash
 $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go" | python3 scant3r.py --nologo
 ```
@@ -156,6 +189,7 @@ $ echo "http://testphp.vulnweb.com/search.php?test=query&searchFor=1&goButton=go
 ## Modules 
 
 * **PMG**
+
 ```bash
 ┌─[knassar702@PC]─[~/tools/scant3r]
 └──╼ $cat waybackurls.txt | python3 scant3r.py -m PMG
@@ -186,7 +220,9 @@ http://example.com/?search=
 http://example.com/?search=
 
 ```
+
 * **headers**
+
 ```bash
 ┌─[knassar702@PC]─[~/tools/scant3r]
 └──╼ $echo https://menacoderrr.pythonanywhere.com|python3 scant3r.py -m headers
@@ -253,9 +289,12 @@ http://example.com/?search=
 [!] URLS : 3
 [!] host : None
 ```
+
 <img src='images/call.png'>
 
+
 * **paths**
+
 ```
 ┌─[knassar702@PC]─[~/tools/scant3r]
 └──╼ $echo 'http://localhost/'| python3 scant3r.py -m paths -w 50
@@ -280,7 +319,9 @@ http://example.com/?search=
 [+] Found :> http://loaclhost/phpinfo.php
 [+] Found :> http://loaclhost/PI.php
 ```
+
 * **hostping**
+
 ```
 ┌─[knassar702@PC]─[~/tools/scant3r]
 └──╼ $cat ~/hunting/sony/domains.txt | python3 scant3r.py -m hostping
@@ -316,7 +357,9 @@ la.en.kb.sony.com 160.33.196.15
 la.es.kb.sony.com 160.33.196.15
 us.en.kb.sony.com 160.33.196.15
 ```
+
 * **CRLF**
+
 ```
 ┌─[knassar702@PC]─[~/tools/scant3r]
 └──╼ $echo 'http://127.0.0.1:5000/?test=' | python3 scant3r.py -m crlf
@@ -346,7 +389,9 @@ us.en.kb.sony.com 160.33.196.15
 [!] Data :> test=%0AHeader-Test:BLATRUC
 
 ```
+
 * **neon**
+
 ```bash
 # CVE-2019-20141 - https://knassar702.github.io/cve/neon/
 ┌─[knassar702@PC]─[~/tools/scant3r]
@@ -473,7 +518,9 @@ http://site.com/?msg=" OR 1=1 --hi
 ```
 
 # Examples :
+
 *  **open urls**
+
 ```python
 from libs import NewRequest as nq
 
@@ -486,6 +533,7 @@ def run(opts):
         print(f'[+] Done :> {url}')
       
 ```
+
 * **add threads**
 
 ```python
@@ -512,13 +560,16 @@ def run(opts):
     q.put(url)
   q.join()
 ```
+
 save it in `scant3r/modules/myscript.py`
 run 
+
 ```
 $ echo 'http://google.com'|python3 scant3r.py -m myscript
 ```
 
 #### scan website from cve-2019-20141
+
 ```python
 #!/usr/bin/env python3
 
@@ -565,7 +616,9 @@ def NEON_CVE(url):
             show.bug(bug='Cross-site scripting',payload='<img src=x onerror=alert(1)>',method='GET',parameter='q',target=u,link='q=<img src=x onerror=alert(1)>')
   
 ```
+
 #### Simple Module Template
+
 ```python3
 #!/usr/bin/env python3
 from threading import Thread
