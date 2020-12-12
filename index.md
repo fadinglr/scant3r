@@ -403,7 +403,9 @@ def run(opts):
 | extractHeaders | add headers value to dictionary|
 | insertAfter | Insert some string into given string at given index 
 
+
 * post_data
+
 ```python
 >> from libs import post_data
 >> post_data('id=1&user=admin')
@@ -415,6 +417,7 @@ def run(opts):
 ```
 
 * NewRequest
+
 ```python
 >> from libs import NewRequest as nq
 >> from libs import post_data
@@ -434,6 +437,7 @@ def run(opts):
 nq.Post('http://testphp.vulnweb.com/search.php',post_data('test=query'))
 nq.Put('http://testphp.vulnweb.com/search.php',post_data('test=query'))
 ```
+
 * extractHeaders
 
 ```python
@@ -441,6 +445,7 @@ nq.Put('http://testphp.vulnweb.com/search.php',post_data('test=query'))
 >> extractHeaders('Auth: c2NhbnQzcgo=')
 {'Auth': 'c2NhbnQzcgo='}
 ```
+
 * urlencoder
 
 ```python
@@ -448,6 +453,7 @@ nq.Put('http://testphp.vulnweb.com/search.php',post_data('test=query'))
 >> urlencoder('<img src=x onerror=alert(1)>')
 %3c%69%6d%67%20%73%72%63%3d%78%20%6f%6e%65%72%72%6f%72%3d%61%6c%65%72%74%28%31%29%3e
 ```
+
 * insertAfter
 
 ```python
@@ -457,6 +463,7 @@ insertAfter('TEXT','INSERT_AFTER','NewText')
 >> insertAfter('http://site.com/?msg=hi','=','" OR 1=1 --')
 http://site.com/?msg=" OR 1=1 --hi
 ```
+
 * ShowMessage
 
 ```python
