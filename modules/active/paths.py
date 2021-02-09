@@ -2,10 +2,6 @@
 from libs import NewRequest as nq
 from urllib.parse import urljoin
 from core import good
-from queue import Queue
-from threading import Thread
-
-q = Queue()
 
 """
 paths = {
@@ -50,17 +46,5 @@ def GO(host):
         finally:
             host = h
 
-def threader():
-    while True:
-        item = q.get()
-        GO(item)
-        q.task_done()
-
-def run(opts):
-    for _ in range(opts['threads']):
-        p1 = Thread(target=threader)
-        p1.daemon = True
-        p1.start()
-    for url in opts['url']:
-        q.put(url)
-    q.join()
+def main(opts):
+    GO(opts['url'])

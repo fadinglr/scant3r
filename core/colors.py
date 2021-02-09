@@ -2,7 +2,7 @@
 __name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
 
 # normal colors
 red = '\u001b[31m'
@@ -43,3 +43,4 @@ BBwhite = '\u001b[47;1m'
 good = f'{yellow}[{rest}{green}+{rest}{yellow}]{rest}'
 bad = f'{yellow}[{rest}{red}-{rest}{yellow}]{rest}'
 info = f'{yellow}[{yellow}!{rest}{yellow}]{rest}'
+forlogo = f'rrrrr'

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask,request,jsonify
+from flask import Flask,request,jsonify,render_template
 from vuln import Xss,Sqli,RCE,CRLF,SSTI
 
 def xss(url):
@@ -56,7 +56,7 @@ def ssti(url):
         return res
 def crlf(url):
     res = []
-    get = SSTI.Get(url)
+    get = CRLF.Get(url)
     if get:
         res.append(get)
     if len(res) > 0:

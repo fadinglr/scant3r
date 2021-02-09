@@ -2,16 +2,20 @@
 #__name__ = 'ScanT3r'
 __author__ = 'Khaled Nassar'
 __email__ = 'knassar702@gmail.com'
-__version__ = '0.5#Beta'
+__version__ = '0.6#Beta'
+
 import sys
 if sys.version_info < (3, 6):
     print('[-] Scant3r requires python >= 3.6')
     sys.exit()
+
+import colorama
+colorama.init()
+
 from optparse import OptionParser
 from libs import NewRequest as nq
 from libs import extractHeaders,post_data,dump_alloptions
-from modules import ImportModule as im
-from modules import module_process
+from modules import *
 from threading import Thread
 from queue import Queue
 from core import ShowMessage as show
@@ -22,24 +26,53 @@ b = Queue()
 c = Queue()
 d = Queue()
 r = Queue()
-helper = """{yellow}
+helper = r"""{yellow}
 Options:
     -h  | show help message and exit
+    -n  | remove scant3r banner
     -c  | add cookies
     -r  | follow redirects
     -p  | add (http/s) proxy
     -t  | Second of timeout (default 10)
     -w  | Number of worker (default 20)
     -l  | add targets list
-    -H  | add custom header
-    -m  | run scant3r module (ex: -m=links.py)
-    -R  | random user-agent
+    -H  | add custom header (ex:-H='HM: True\nTest: New')
+    -m  | run scant3r module (ex: -m=example)
+    -R  | random User-agent
     -x  | your host(xsshunter,burp collaborator)
-    -d  | Dump all requests
+    -d  | Debugging Mode (show req/resp)
+    -S  | use scant3r scanner after use modules
 Pipe:
     $ echo "http://web.com/?v=1" | scant3r
 List:
     $ scant3r -l web.txt
+Wiki:
+    ScanT3r Modules
+    - https://github.com/knassar702/scant3r/wiki/ScanT3r-Modules
+    how to wirte your own scant3r script
+    - https://github.com/knassar702/scant3r/wiki/writing-your-own-scant3r-module
+    
+    ScanT3r API
+    - https://github.com/knassar702/scant3r/wiki/ScanT3r-API
+    Usage
+    - https://github.com/knassar702/scant3r/wiki/Usage
+Examples:
+    # simple scan
+        $ echo 'http://php.net' | ./scant3r.py -w 100 -R
+    # Find SSRF Parameters
+        $ echo 'http://testphp.vulnweb.com/showimage.php' | ./scant3r.py -m lorsrf -w 100 -R -x http://myhost
+    # Find Files
+        $ cat subdomains.txt | ./scant3r.py -m paths -w 100 -R
+    # scan headers from custom payloads
+        $ cat subdomains.txt | ./scant3r.py -m headers -w 100 -R
+    # get live http/s
+        $ cat subdomains.txt | ./scant3r.py -m httper -w 100 -R
+    # get live hosts
+        $ cat subdomains.txt | ./scant3r.py -m hostping -w 100
+    # find host header injection
+        $ cat subdomains.txt | ./scant3r.py -m hostinj -w 100 -R
+    # Run Multi modules
+        $ ./scant3r.py -l subdomains.txt -m example -m example -m example -w 100 -R
 {rest}
 """.format(yellow=yellow,rest=rest)
 optp = OptionParser(add_help_option=False)
@@ -47,10 +80,11 @@ optp.add_option("-h",'--help',dest='help',action='store_true')
 optp.add_option('-c',dest='cookie')
 optp.add_option('-r',dest='redirect',action='store_true')
 optp.add_option('-p',dest='proxy')
-optp.add_option('--nologo',dest='nologo',action='store_true')
+optp.add_option('-n','--nologo',dest='nologo',action='store_true')
 optp.add_option('--api',dest='api',action='store_true')
 optp.add_option('-l',dest='List')
 optp.add_option('-m',dest='module',action='append')
+optp.add_option('-g',dest='gasker')
 optp.add_option('-d',dest='dump',action='store_true')
 optp.add_option('-S',dest='use_scanner',action='store_true')
 optp.add_option('-t',dest='timeout',type='int')
@@ -166,7 +200,8 @@ if __name__ == '__main__':
     from vuln import txss,tcrlf,trce,tsqli,tssti
     if module:
         for M in module:
-            module_process(module=M,all_options=all_options)
+            Import.Get(M)
+            Import.run(all_options)
         if use_scanner:
             pass
         else:
@@ -190,11 +225,14 @@ if __name__ == '__main__':
     for url in all_options['url']:
         url = url.rstrip()
         if '?' in url and '=' in url:
-            a.put(url)
-            b.put(url)
-            c.put(url)
-            d.put(url)
-            r.put(url)
+            pass
+        else:
+            url += '?q=&s=&search=&id=&keyword=&query=&page=&keywords=&url=&view=&cat=&name=&key=&p=&test=&artist=&user=&username=&group='
+        a.put(url)
+        b.put(url)
+        c.put(url)
+        d.put(url)
+        r.put(url)
     a.join()
     b.join()
     c.join()
